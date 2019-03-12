@@ -1,1 +1,1 @@
-# forex-pattern
+# Forex Harmonic Pattern Detection
