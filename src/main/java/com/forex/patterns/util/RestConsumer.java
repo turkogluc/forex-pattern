@@ -51,7 +51,7 @@ public class RestConsumer {
 
             bars.add(bar);
 
-            System.out.println(bar.toString());
+            //System.out.println(bar.toString());
 
         }
 

@@ -3,10 +3,13 @@ package com.forex.patterns.util;
 import com.forex.patterns.model.Bar;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
- * Static functions related with extremum point analyze
+ * Static functions related with extreme point analyze
  */
 public class Extremum {
 
@@ -213,6 +216,31 @@ public class Extremum {
             outputBars.add(lastBar);
 
         return outputBars;
+    }
+
+    /**
+     * Find All Extreme Points including local minimum and maximum
+     *
+     * @param inputBars : price list
+     * @param numOfNeighbours : int n, to check critical points that should be greater || smaller than ;
+     *                  following n points and
+     *                  preceding n points
+     * @return allExtrems
+     */
+    public static List<Bar> findExtremePoints(List<Bar> inputBars, int numOfNeighbours){
+
+        List<Bar> localMinimumPoints = findLocalMinimumPoints(inputBars, numOfNeighbours);
+        List<Bar> localMaximumPoints = findLocalMaximumPoints(inputBars, numOfNeighbours);
+
+        List<Bar> allExtrems = new ArrayList<>();
+        allExtrems.addAll(localMinimumPoints);
+        allExtrems.addAll(localMaximumPoints);
+
+
+        return allExtrems
+                .stream()
+                .sorted(Comparator.comparing(Bar::getTimestamp))
+                .collect(Collectors.toList());
     }
 
 }

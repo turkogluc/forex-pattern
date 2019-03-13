@@ -13,6 +13,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.io.IOException;
 import java.util.List;
 
+import static com.forex.patterns.util.Extremum.findExtremePoints;
+import static com.forex.patterns.util.Extremum.findLocalMaximumPoints;
 import static com.forex.patterns.util.Extremum.findLocalMinimumPoints;
 
 @RunWith(SpringRunner.class)
@@ -22,20 +24,53 @@ public class PatternsApplicationTests {
     @Autowired
     RestConsumer restConsumer;
 
-	@Test
-	public void contextLoads() throws IOException {
 
+    public List<Bar> getExchangeRateData() throws IOException {
         List<Bar> exchangeRateData = restConsumer.retrieveExchangeDataByInterval(
                 Currency.EUR,
                 Currency.USD,
                 Interval._60MIN
         );
 
-        List<Bar> localMinimums = findLocalMinimumPoints(exchangeRateData, 5);
+        return exchangeRateData;
+    }
+
+    @Test
+    public void getExchangeRateDataTest() throws IOException {
+        List<Bar> exchangeRateData = restConsumer.retrieveExchangeDataByInterval(
+                Currency.EUR,
+                Currency.USD,
+                Interval._60MIN
+        );
 
         System.out.println("size="+exchangeRateData.size());
 
+    }
 
+	@Test
+	public void localMaxTest() throws IOException {
+
+        List<Bar> exchangeRateData = getExchangeRateData();
+
+        List<Bar> extrems = findLocalMaximumPoints(exchangeRateData, 5);
+
+        System.out.println("Local maxs");
+
+        for(Bar bar: extrems){
+            System.out.println(bar.toString());
+        }
+
+        System.out.println("size="+extrems.size());
+
+
+    }
+
+    @Test
+    public void LocalMinTest() throws IOException {
+
+        List<Bar> exchangeRateData = getExchangeRateData();
+
+        List<Bar> localMinimums = findLocalMinimumPoints(exchangeRateData, 5);
         System.out.println("Local mins");
 
         for(Bar bar: localMinimums){
@@ -44,6 +79,21 @@ public class PatternsApplicationTests {
 
         System.out.println("size="+localMinimums.size());
 
+    }
+
+    @Test
+    public void AllExtemsTest() throws IOException {
+
+        List<Bar> exchangeRateData = getExchangeRateData();
+
+        List<Bar> extremePoints = findExtremePoints(exchangeRateData, 5);
+        System.out.println("Extrem Points");
+
+        for(Bar bar: extremePoints){
+            System.out.println(bar.toString());
+        }
+
+        System.out.println("size="+extremePoints.size());
 
 
     }
