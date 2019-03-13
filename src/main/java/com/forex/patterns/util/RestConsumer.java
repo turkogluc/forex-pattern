@@ -19,7 +19,7 @@ public class RestConsumer {
 
     private static final String API_KEY = "4T6YDWXJ7RHY63QK";
 
-    public List<Bar> retrieveExchangeData(String from, String to, String interval) throws IOException {
+    public List<Bar> retrieveExchangeDataByInterval(String from, String to, String interval) throws IOException {
         RestTemplate restTemplate = new RestTemplate();
 
         String url = "https://www.alphavantage.co/query?function=FX_INTRADAY&" +
