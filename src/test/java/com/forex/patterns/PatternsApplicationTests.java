@@ -28,7 +28,8 @@ public class PatternsApplicationTests {
 
         List <Bar> exchangeRateData = getExchangeRateData();
 
-        System.out.println(Bat.ScanBat(exchangeRateData, 5).toString());
+        Bat.ScanBat(exchangeRateData, 5);
+        //System.out.println(Bat.ScanBat(exchangeRateData, 5).toString());
 
 
     }
@@ -53,9 +54,9 @@ public class PatternsApplicationTests {
 
     public List<Bar> getExchangeRateData() throws IOException {
         List<Bar> exchangeRateData = restConsumer.retrieveExchangeDataByInterval(
-                Currency.GBP,
+                Currency.EUR,
                 Currency.USD,
-                Interval._60MIN
+                Interval._15MIN
         );
 
         return exchangeRateData;

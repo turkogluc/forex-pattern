@@ -18,6 +18,9 @@ public class Bat {
     public static final double BCDpercentageLowerLimit = 168.1;
     public static final double BCDpercentageUpperLimit = 268.1;
 
+    public static final double ABCpercentageLowerLimit = 38.2;
+    public static final double ABCpercentageUpperLimit = 88.6;
+
 
     /**
      * Scan Bat Pattern : Find X-A-B-C-D points which has proper Fibonacci ratio relations among each other
@@ -39,7 +42,7 @@ public class Bat {
 
         inputChart.forEach(pointD -> { // for each bar (possibly point D) on the chart
 
-            extremePoints.forEach(pointC ->{ // choose each and every extreme points as possible point C
+            extremePoints.forEach(pointC -> { // choose each and every extreme points as possible point C
 
                 ScanPointB( pointD,
                             pointC,
@@ -56,63 +59,72 @@ public class Bat {
                                         extremePoints.subList (
                                                 extremePoints.indexOf(pointB)+1,
                                                 extremePoints.size() )
-                                        );
+                                        )
+                                    .forEach(pointA ->{
 
+                                        System.out.println("pointA:" + pointA);
+                                        System.out.println("pointB:" + pointB);
+                                        System.out.println("pointC:" + pointC);
+                                        System.out.println("pointD:" + pointD);
+
+
+                                    });
 
 
                         });
 
             });
 
+
         });
 
-        for(Bar currentBar : inputChart){
-
-            // PointD <- current bar (any point possibly D)
-
-            for(Bar extremePoint : extremePoints){
-
-                // PointC <- extremePoint  (any point possibly C)
-
-                // find point B
-                List<Bar> pointB = ScanPointB(currentBar,
-                                        extremePoint,
-                                        extremePoints.subList(extremePoints.indexOf(extremePoint)+1, extremePoints.size())
-                );
-
-                Bar pointA = null;
-
-                pointB.forEach( b -> {
-
-                    //cemal
-
-                });
-
-                if (pointB.size() > 0){
-
-
-
-                    shapedPattern.setPointD(currentBar);
-                    shapedPattern.setPointC(extremePoint);
-                    shapedPattern.setPointB(pointB.get(0));
-
-                    return shapedPattern;
-
-//                    pointA = ScanPointA(currentBar,
-//                                        extremePoint,
-//                                        pointB,
-//                                        extremePoints.subList(extremePoints.indexOf(pointB)+1, extremePoints.size())
-//                    );
+//        for(Bar currentBar : inputChart){
 //
-//                    if (pointA != null){
-
-
-
-                    }
-
-            }
-
-        }
+//            // PointD <- current bar (any point possibly D)
+//
+//            for(Bar extremePoint : extremePoints){
+//
+//                // PointC <- extremePoint  (any point possibly C)
+//
+//                // find point B
+//                List<Bar> pointB = ScanPointB(currentBar,
+//                                        extremePoint,
+//                                        extremePoints.subList(extremePoints.indexOf(extremePoint)+1, extremePoints.size())
+//                );
+//
+//                Bar pointA = null;
+//
+//                pointB.forEach( b -> {
+//
+//                    //cemal
+//
+//                });
+//
+//                if (pointB.size() > 0){
+//
+//
+//
+//                    shapedPattern.setPointD(currentBar);
+//                    shapedPattern.setPointC(extremePoint);
+//                    shapedPattern.setPointB(pointB.get(0));
+//
+//                    return shapedPattern;
+//
+////                    pointA = ScanPointA(currentBar,
+////                                        extremePoint,
+////                                        pointB,
+////                                        extremePoints.subList(extremePoints.indexOf(pointB)+1, extremePoints.size())
+////                    );
+////
+////                    if (pointA != null){
+//
+//
+//
+//                    }
+//
+//            }
+//
+//        }
 
         return null;
     }
@@ -145,12 +157,12 @@ public class Bat {
 
 
             List <Bar> collect = extremePoints.stream().filter(bar -> {
-                return bar.getHigh() > priceBLowerLimit && bar.getHigh() < priceBUpperLimit;
+                return bar.getHigh() > priceBLowerLimit && bar.getHigh() < priceBUpperLimit && bar.getIsExtreme().equals("MAX");
             }).collect(Collectors.toList());
 
             if (collect.size() > 0 ){
 
-                System.out.println("Point B found");
+                //System.out.println("Point B found");
                 resultSet.addAll(collect);
             }
 
@@ -163,11 +175,11 @@ public class Bat {
             priceBUpperLimit = Fibonacci.calcFiboRetracePriceBackward(BarC.getHigh(), BarD.getLow(), BCDpercentageUpperLimit);
 
             List <Bar> collect = extremePoints.stream().filter(bar -> {
-                return bar.getLow() > priceBLowerLimit && bar.getLow() < priceBUpperLimit;
+                return bar.getLow() > priceBLowerLimit && bar.getLow() < priceBUpperLimit && bar.getIsExtreme().equals("MIN");
             }).collect(Collectors.toList());
 
             if (collect.size() > 0 ){
-                System.out.println("Point B found");
+                //System.out.println("Point B found");
                 resultSet.addAll(collect);
             }
 
@@ -178,9 +190,52 @@ public class Bat {
         return resultSet;
     }
 
-    public static List<Bar> ScanPointA(Bar PointD, Bar PointC, Bar PointB, List<Bar> extremePoints){
+    public static List<Bar> ScanPointA(Bar BarD, Bar BarC, Bar BarB, List<Bar> extremePoints){
 
-        return null;
+        List<Bar> resultSet = new ArrayList <>();
+
+        double priceALowerLimit;
+        double priceAUpperLimit;
+
+        if (BarB.getIsExtreme().equals("MIN")){
+
+            // if BarC is an local MIN extreme
+            // then BarB and BarD must be local MAX
+
+            priceALowerLimit = Fibonacci.calcFiboRetracePriceBackward(BarB.getLow(), BarC.getHigh(), ABCpercentageLowerLimit);
+            priceAUpperLimit = Fibonacci.calcFiboRetracePriceBackward(BarB.getLow(), BarC.getHigh(), ABCpercentageUpperLimit);
+
+
+            List <Bar> collect = extremePoints.stream().filter(bar -> {
+                return bar.getHigh() > priceALowerLimit && bar.getHigh() < priceAUpperLimit && bar.getIsExtreme().equals("MAX");
+            }).collect(Collectors.toList());
+
+            if (collect.size() > 0 ){
+
+                System.out.println("Point A found");
+                resultSet.addAll(collect);
+            }
+
+        }else if (BarB.getIsExtreme().equals("MAX")){
+
+            // if BarC is an local MAX extreme
+            // then BarB and BarD must be local MIN
+
+            priceALowerLimit = Fibonacci.calcFiboRetracePriceBackward(BarB.getHigh(), BarC.getLow(), ABCpercentageLowerLimit);
+            priceAUpperLimit = Fibonacci.calcFiboRetracePriceBackward(BarB.getHigh(), BarC.getLow(), ABCpercentageUpperLimit);
+
+            List <Bar> collect = extremePoints.stream().filter(bar -> {
+                return bar.getLow() > priceALowerLimit && bar.getLow() < priceAUpperLimit && bar.getIsExtreme().equals("MIN");
+            }).collect(Collectors.toList());
+
+            if (collect.size() > 0 ){
+                System.out.println("Point A found");
+                resultSet.addAll(collect);
+            }
+
+        }
+
+        return resultSet;
     }
 
 }
