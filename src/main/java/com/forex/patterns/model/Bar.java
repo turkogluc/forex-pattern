@@ -9,6 +9,7 @@ public class Bar {
     private Double low;
     private Double high;
     private String timestamp;
+    private String isExtreme;
 
     public Bar() {
     }
@@ -59,6 +60,14 @@ public class Bar {
 
     public void setTimestamp(String timestamp) {
         this.timestamp = timestamp;
+    }
+
+    public String getIsExtreme() {
+        return isExtreme;
+    }
+
+    public void setIsExtreme(String isExtreme) {
+        this.isExtreme = isExtreme;
     }
 
     @Override

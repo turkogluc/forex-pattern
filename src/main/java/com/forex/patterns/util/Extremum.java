@@ -232,6 +232,11 @@ public class Extremum {
         List<Bar> localMinimumPoints = findLocalMinimumPoints(inputBars, numOfNeighbours);
         List<Bar> localMaximumPoints = findLocalMaximumPoints(inputBars, numOfNeighbours);
 
+
+        localMaximumPoints.forEach(bar -> bar.setIsExtreme("MIN"));
+        localMinimumPoints.forEach(bar -> bar.setIsExtreme("MAX"));
+
+
         List<Bar> allExtrems = new ArrayList<>();
         allExtrems.addAll(localMinimumPoints);
         allExtrems.addAll(localMaximumPoints);

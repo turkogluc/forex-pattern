@@ -2,12 +2,18 @@ package com.forex.patterns;
 
 
 import com.forex.patterns.model.Bar;
+import com.forex.patterns.model.Currency;
+import com.forex.patterns.model.Interval;
+import com.forex.patterns.model.Pattern;
+import com.forex.patterns.pattern.Bat;
+import com.forex.patterns.util.RestConsumer;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,6 +21,17 @@ import java.util.List;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class PatternsApplicationTests {
+
+
+    @Test
+    public void bcdPointsTest() throws IOException {
+
+        List <Bar> exchangeRateData = getExchangeRateData();
+
+        System.out.println(Bat.ScanBat(exchangeRateData, 5).toString());
+
+
+    }
 
     @Test
     public void someListTest(){
@@ -29,6 +46,19 @@ public class PatternsApplicationTests {
 
         liste.subList(liste.indexOf(t2)+1,liste.size()).forEach(s -> System.out.println(s.toString()));
 
+    }
+
+    @Autowired
+    RestConsumer restConsumer;
+
+    public List<Bar> getExchangeRateData() throws IOException {
+        List<Bar> exchangeRateData = restConsumer.retrieveExchangeDataByInterval(
+                Currency.EUR,
+                Currency.USD,
+                Interval._5MIN
+        );
+
+        return exchangeRateData;
     }
 
 

@@ -13,12 +13,6 @@ public class FibonacciRetracePriceBackwardTest {
         double A = 2.880;
 
 
-//        double B = 2.88;
-//        double Percent = 0;
-//        System.out.println(Fibonacci.calcFiboRetracePriceBackward(A,B,Percent));
-//        assertEquals(pointX,Fibonacci.calcFiboRetracePriceBackward(A,B,Percent),0.01);
-
-
         double B = 2.8658;
         double Percent = 23.6;
         System.out.println(Fibonacci.calcFiboRetracePriceBackward(A,B,Percent));
@@ -51,8 +45,8 @@ public class FibonacciRetracePriceBackwardTest {
     public void realPriceDownTrend_CalcRetracePriceBackwardTest(){
 
         double pointX = 2.820;
-
         double A = 2.760;
+
 
         double B = 2.8429 ;
         double Percent = 138.2;
