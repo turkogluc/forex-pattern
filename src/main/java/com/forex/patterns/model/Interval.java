@@ -1,6 +1,7 @@
 package com.forex.patterns.model;
 
 public class Interval {
+    public static final String _1MIN = "1min";
     public static final String _5MIN = "5min";
     public static final String _15MIN = "15min";
     public static final String _30MIN = "30min";

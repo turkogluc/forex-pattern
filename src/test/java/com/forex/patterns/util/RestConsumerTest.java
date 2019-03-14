@@ -30,22 +30,22 @@ public class RestConsumerTest {
 
     @Test
     public void getExchangeRateDataTest() {
-        List<Bar> exchangeRateData = null;
-        try {
-            exchangeRateData = restConsumer.retrieveExchangeDataByInterval(
-                    Currency.EUR,
-                    Currency.USD,
-                    Interval._60MIN
-            );
-
-            System.out.println("size="+exchangeRateData.size());
-
-            exchangeRateData.forEach(bar -> System.out.println(bar.toString()));
-
-        } catch (IOException e) {
-            e.printStackTrace();
-            System.out.println("Sometimes API call gets error, may be network issues or api server problem");
-        }
+//        List<Bar> exchangeRateData = null;
+//        try {
+//            exchangeRateData = restConsumer.retrieveExchangeDataByInterval(
+//                    Currency.EUR,
+//                    Currency.USD,
+//                    Interval._60MIN
+//            );
+//
+//            System.out.println("size="+exchangeRateData.size());
+//
+//            exchangeRateData.forEach(bar -> System.out.println(bar.toString()));
+//
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//            System.out.println("Sometimes API call gets error, may be network issues or api server problem");
+//        }
 
 
 

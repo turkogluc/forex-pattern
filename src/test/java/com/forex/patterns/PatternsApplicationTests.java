@@ -26,12 +26,43 @@ public class PatternsApplicationTests {
     @Test
     public void bcdPointsTest() throws IOException {
 
-        List <Bar> exchangeRateData = getExchangeRateData();
-
-        Bat.ScanBat(exchangeRateData, 5);
-        //System.out.println(Bat.ScanBat(exchangeRateData, 5).toString());
+        scanBatOnPair(Currency.EUR,Currency.NZD,3);
 
 
+    }
+
+    public void scanBatOnPair(String from, String to,int interval) throws IOException {
+        // 3 bar neighbour
+        List <Bar> exchangeRateData = getExchangeRateData(from,to,Interval._1MIN);
+        Bat.ScanBat(exchangeRateData, interval);
+                
+        exchangeRateData = getExchangeRateData(from,to,Interval._5MIN);
+        Bat.ScanBat(exchangeRateData, interval);
+
+        exchangeRateData = getExchangeRateData(from,to,Interval._15MIN);
+        Bat.ScanBat(exchangeRateData, interval);
+
+        exchangeRateData = getExchangeRateData(from,to,Interval._30MIN);
+        Bat.ScanBat(exchangeRateData, interval);
+
+        exchangeRateData = getExchangeRateData(from,to,Interval._60MIN);
+        Bat.ScanBat(exchangeRateData, interval);
+
+    }
+
+    @Autowired
+    RestConsumer restConsumer;
+
+    public List<Bar> getExchangeRateData(String fromCurrenct,String toCurrency,String interval) {
+
+        List<Bar> exchangeRateData = null;
+        exchangeRateData = restConsumer.retrieveExchangeDataByInterval(
+                fromCurrenct,
+                toCurrency,
+                interval
+        );
+
+        return exchangeRateData;
     }
 
     @Test
@@ -49,18 +80,7 @@ public class PatternsApplicationTests {
 
     }
 
-    @Autowired
-    RestConsumer restConsumer;
 
-    public List<Bar> getExchangeRateData() throws IOException {
-        List<Bar> exchangeRateData = restConsumer.retrieveExchangeDataByInterval(
-                Currency.EUR,
-                Currency.USD,
-                Interval._15MIN
-        );
-
-        return exchangeRateData;
-    }
 
 
 }
