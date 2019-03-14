@@ -3,7 +3,8 @@ package com.forex.patterns.util;
 public class Fibonacci {
 
     /**
-     * Given a zigzag, calculate the retrace percentage
+     * Given X,A,B points in a zigzag,
+     * Calculate the retrace percentage
      *
      *         [A]              |
      *        /   \             |   Retrace range [AB]
@@ -15,10 +16,9 @@ public class Fibonacci {
      * @param pointX    starting point
      * @param pointA    extremum min or max
      * @param pointB    retrace after point A
-     *                  point B should be between X and A for a valid retrace
-     * @return
+     * @return  percentage
      */
-    public static double calcRetracePercentage(double pointX,double pointA, double pointB){
+    public static double calcFiboRetracePercentage(double pointX, double pointA, double pointB){
 
         /*
             if they are all increasing or decreasing order
@@ -43,8 +43,34 @@ public class Fibonacci {
         // for 100 --------- retrace [?]
 
         return (100* diffAB) / diffXA;
+    }
 
+    /**
+     * Given X,A points and percentage,
+     * Calculate point B
+     *
+     * @param pointX    starting point
+     * @param pointA    extremum min or max
+     * @param percentage    retrace percentage
+     * @return  pointB according to given X,A points and percentage
+     */
+    public static double calcFiboRetracePrice(double pointX, double pointA, double percentage){
 
+        double diffXA = Math.abs( pointX - pointA );
+        double newPriceDiff = (diffXA * percentage) / 100;
+        double pointB = 0 ;
+
+        if ( pointX < pointA ){
+
+            pointB = pointA - newPriceDiff;
+
+        }else{
+
+            pointB = pointA + newPriceDiff;
+
+        }
+
+        return pointB;
     }
 
 }
