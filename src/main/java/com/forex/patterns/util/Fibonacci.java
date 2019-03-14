@@ -49,8 +49,8 @@ public class Fibonacci {
      * Given X,A points and percentage,
      * Calculate point B
      *
-     * @param pointX    starting point
-     * @param pointA    extremum min or max
+     * @param pointX        starting point
+     * @param pointA        extremum min or max
      * @param percentage    retrace percentage
      * @return  pointB according to given X,A points and percentage
      */
@@ -71,6 +71,42 @@ public class Fibonacci {
         }
 
         return pointB;
+    }
+
+    /**
+     * Given A,B points and percentage,
+     * Calculate starting point X
+     *
+     * @param pointA        extreme min or max
+     * @param pointB        ending point
+     * @param percentage    retrace percentage
+     * @return  pointX according to given A,B points and percentage
+     */
+    public static double calcFiboRetracePriceBackward(double pointA, double pointB, double percentage){
+
+        if (percentage == 0){
+
+        }
+
+        double diffAB = Math.abs( pointA - pointB);
+
+        //  Expected distance calculator
+        //        100  ---- percentage
+        //        ?    ---- [AB]
+
+
+        double expectedDistance = ( 100 * diffAB ) / percentage ;
+
+        if (pointA > pointB){
+
+            return pointA - expectedDistance;
+
+        }else{
+
+            return pointA + expectedDistance;
+
+        }
+
     }
 
 }

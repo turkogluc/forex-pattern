@@ -40,6 +40,8 @@ public class RestConsumerTest {
 
             System.out.println("size="+exchangeRateData.size());
 
+            exchangeRateData.forEach(bar -> System.out.println(bar.toString()));
+
         } catch (IOException e) {
             e.printStackTrace();
             System.out.println("Sometimes API call gets error, may be network issues or api server problem");

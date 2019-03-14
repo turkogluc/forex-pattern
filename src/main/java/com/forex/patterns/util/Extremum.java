@@ -237,9 +237,10 @@ public class Extremum {
         allExtrems.addAll(localMaximumPoints);
 
 
+        // Sort by timestamp and return list starting from most current to past
         return allExtrems
                 .stream()
-                .sorted(Comparator.comparing(Bar::getTimestamp))
+                .sorted(Comparator.comparing(Bar::getTimestamp).reversed())
                 .collect(Collectors.toList());
     }
 
