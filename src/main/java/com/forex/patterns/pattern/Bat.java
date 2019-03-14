@@ -37,6 +37,35 @@ public class Bat {
 
         List<Bar> extremePoints = Extremum.findExtremePoints(inputChart,numOfNeighbours);
 
+        inputChart.forEach(pointD -> { // for each bar (possibly point D) on the chart
+
+            extremePoints.forEach(pointC ->{ // choose each and every extreme points as possible point C
+
+                ScanPointB( pointD,
+                            pointC,
+                            extremePoints.subList(
+                                    extremePoints.indexOf(pointC)+1,
+                                    extremePoints.size() )
+                            )
+                        .forEach( pointB -> {  // for each pointB that is found
+
+
+                            ScanPointA (pointD,
+                                        pointC,
+                                        pointB,
+                                        extremePoints.subList (
+                                                extremePoints.indexOf(pointB)+1,
+                                                extremePoints.size() )
+                                        );
+
+
+
+                        });
+
+            });
+
+        });
+
         for(Bar currentBar : inputChart){
 
             // PointD <- current bar (any point possibly D)
@@ -53,7 +82,15 @@ public class Bat {
 
                 Bar pointA = null;
 
+                pointB.forEach( b -> {
+
+                    //cemal
+
+                });
+
                 if (pointB.size() > 0){
+
+
 
                     shapedPattern.setPointD(currentBar);
                     shapedPattern.setPointC(extremePoint);
@@ -76,6 +113,7 @@ public class Bat {
             }
 
         }
+
         return null;
     }
 
@@ -140,7 +178,7 @@ public class Bat {
         return resultSet;
     }
 
-    public static Bar ScanPointA(Bar PointD, Bar PointC, Bar PointB, List<Bar> extremePoints){
+    public static List<Bar> ScanPointA(Bar PointD, Bar PointC, Bar PointB, List<Bar> extremePoints){
 
         return null;
     }

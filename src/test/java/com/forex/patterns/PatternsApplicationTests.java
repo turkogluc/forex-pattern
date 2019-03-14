@@ -53,9 +53,9 @@ public class PatternsApplicationTests {
 
     public List<Bar> getExchangeRateData() throws IOException {
         List<Bar> exchangeRateData = restConsumer.retrieveExchangeDataByInterval(
-                Currency.EUR,
+                Currency.GBP,
                 Currency.USD,
-                Interval._5MIN
+                Interval._60MIN
         );
 
         return exchangeRateData;
