@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 
 public class HistoricalDataReader {
 
-    // O H L C
+    // Open - High - Low - Close
 
     public static String COMMA_DELIMITER = ",";
 

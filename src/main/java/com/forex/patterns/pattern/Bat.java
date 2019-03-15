@@ -199,36 +199,47 @@ public class Bat {
         double priceALowerLimit;
         double priceAUpperLimit;
 
+        if (BarD.getTimestamp().compareTo("2019.03.15 01:15") == 0 &&
+            BarC.getTimestamp().compareTo("2019.03.14 08:10") == 0 &&
+            BarB.getTimestamp().compareTo("2019.03.14 01:45") == 0){
+
+            System.out.println("");
+
+        }
+
+
         if (BarB.getIsExtreme().equals("MIN")){
 
-            // if BarB is an local MIN extreme...
+            // if BarB is an local MIN extreme
+            // then BarB and BarD must be local MAX
 
-            /*
-                NOTE: only constraint here is that A >= C
-                      later when scanning X, we need to check XAC limit boundaries as well
-             */
+            priceAUpperLimit = Fibonacci.calcFiboRetracePriceBackward(BarB.getLow(), BarC.getHigh(), ABCpercentageLowerLimit);
+            priceALowerLimit = Fibonacci.calcFiboRetracePriceBackward(BarB.getLow(), BarC.getHigh(), ABCpercentageUpperLimit);
 
 
             List <Bar> collect = extremePoints.stream().filter(bar -> {
-                return bar.getHigh() >= BarC.getHigh() && bar.getIsExtreme().equals("MAX");
+                return bar.getHigh() >= priceALowerLimit && bar.getHigh() <= priceAUpperLimit && bar.getIsExtreme().equals("MAX");
             }).collect(Collectors.toList());
 
             if (collect.size() > 0 ){
-
-                //logger.info("Point A found");
+                //System.out.println("Point A found");
                 resultSet.addAll(collect);
             }
 
         }else if (BarB.getIsExtreme().equals("MAX")){
 
-            // if BarB is an local MAX extreme..
+            // if BarB is an local MAX extreme
+            // then BarB and BarD must be local MIN
+
+            priceAUpperLimit = Fibonacci.calcFiboRetracePriceBackward(BarB.getHigh(), BarC.getLow(), ABCpercentageLowerLimit);
+            priceALowerLimit = Fibonacci.calcFiboRetracePriceBackward(BarB.getHigh(), BarC.getLow(), ABCpercentageUpperLimit);
 
             List <Bar> collect = extremePoints.stream().filter(bar -> {
-                return bar.getLow() <= BarC.getLow() && bar.getIsExtreme().equals("MIN");
+                return bar.getLow() > priceALowerLimit && bar.getLow() < priceAUpperLimit && bar.getIsExtreme().equals("MIN");
             }).collect(Collectors.toList());
 
             if (collect.size() > 0 ){
-                //logger.info("Point A found");
+                //System.out.println("Point A found");
                 resultSet.addAll(collect);
             }
 
@@ -269,7 +280,7 @@ public class Bat {
             priceXADLowerLimit = Fibonacci.calcFiboRetracePriceBackward(BarA.getLow(), BarD.getHigh(), XADpercentageLowerLimit);
             priceXADUpperLimit = Fibonacci.calcFiboRetracePriceBackward(BarA.getLow(),BarD.getHigh(), XADpercentageUpperLimit);
 
-            // TODO : also add XAC limit
+            // TODO : also add XAC limit ????
 
             // merging 2 constraints
             priceXLowerLimit = Math.max(priceXABLowerLimit, priceXADLowerLimit);   // highest between lower limits will be general low limit
