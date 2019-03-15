@@ -13,10 +13,12 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+import sun.awt.Mutex;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Semaphore;
 
 
 @RunWith(SpringRunner.class)
@@ -27,7 +29,22 @@ public class PatternsApplicationTests {
     @Test
     public void bcdPointsTest() throws IOException {
 
-        Bat.ScanBat(retrieveHistoricalDataFromFileTest(), 5);
+        try {
+            Mutex mutex = new Mutex();
+            mutex.lock();
+            try {
+                // do something
+
+                Bat.ScanBat(retrieveHistoricalDataFromFileTest(), 5);
+
+            } finally {
+                mutex.unlock();
+            }
+        } catch(Exception e) {
+            // ...
+        }
+
+
 
     }
 

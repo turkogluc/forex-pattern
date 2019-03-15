@@ -22,15 +22,15 @@ public class Bat {
     public static final double BCDpercentageLowerLimit = 168.1;
     public static final double BCDpercentageUpperLimit = 268.1;
 
-    public static final double ABCpercentageLowerLimit = 38.2;
-    public static final double ABCpercentageUpperLimit = 88.6;
-
     public static final double XABpercentageLowerLimit = 38.2;
     public static final double XABpercentageUpperLimit = 50.0;
 
     public static final double XADpercentageLowerLimit = 88.0;
     public static final double XADpercentageUpperLimit = 89.0;
 
+    // abc retrace hesaplamasini yanlis yapiyorum
+    public static final double ABCpercentageLowerLimit = 38.2;
+    public static final double ABCpercentageUpperLimit = 88.6;
 
     /**
      * Scan Bat Pattern : Find X-A-B-C-D points which has proper Fibonacci ratio relations among each other
@@ -54,7 +54,18 @@ public class Bat {
 
         inputChart.forEach(pointD -> { // for each bar (possibly point D) on the chart
 
-            extremePoints.forEach(pointC -> { // choose each and every extreme points as possible point C
+
+            /*
+                C must before D (historically) therefore remove the extremes points in the list coming after D
+             */
+            List<Bar> extremesBeforePointD = extremePoints.stream().filter( bar -> {
+                if (bar.getTimestamp().compareTo( pointD.getTimestamp() ) < 0 ){
+                    return true;
+                }
+                return false;
+            }).collect(Collectors.toList());
+
+            extremesBeforePointD.forEach(pointC -> { // choose each and every extreme points as possible point C
 
                 ScanPointB( pointD,
                             pointC,
@@ -90,11 +101,15 @@ public class Bat {
                                             shapedPattern.setPointC(pointC);
                                             shapedPattern.setPointD(pointD);
 
+                                            logger.info("bat found");
+
                                             logger.info("pointX:" + pointX);
                                             logger.info("pointA:" + pointA);
                                             logger.info("pointB:" + pointB);
                                             logger.info("pointC:" + pointC);
                                             logger.info("pointD:" + pointD);
+
+                                            logger.info("");
 
                                         });
 
@@ -141,7 +156,7 @@ public class Bat {
 
             if (collect.size() > 0 ){
 
-                logger.info("Point B found");
+                //logger.info("Point B found");
                 resultSet.addAll(collect);
             }
 
@@ -158,7 +173,7 @@ public class Bat {
             }).collect(Collectors.toList());
 
             if (collect.size() > 0 ){
-                logger.info("Point B found");
+                //logger.info("Point B found");
                 resultSet.addAll(collect);
             }
 
@@ -186,37 +201,34 @@ public class Bat {
 
         if (BarB.getIsExtreme().equals("MIN")){
 
-            // if BarB is an local MIN extreme
-            // then BarB and BarD must be local MAX
+            // if BarB is an local MIN extreme...
 
-            priceALowerLimit = Fibonacci.calcFiboRetracePriceBackward(BarB.getLow(), BarC.getHigh(), ABCpercentageLowerLimit);
-            priceAUpperLimit = Fibonacci.calcFiboRetracePriceBackward(BarB.getLow(), BarC.getHigh(), ABCpercentageUpperLimit);
+            /*
+                NOTE: only constraint here is that A >= C
+                      later when scanning X, we need to check XAC limit boundaries as well
+             */
 
 
             List <Bar> collect = extremePoints.stream().filter(bar -> {
-                return bar.getHigh() > priceALowerLimit && bar.getHigh() < priceAUpperLimit && bar.getIsExtreme().equals("MAX");
+                return bar.getHigh() >= BarC.getHigh() && bar.getIsExtreme().equals("MAX");
             }).collect(Collectors.toList());
 
             if (collect.size() > 0 ){
 
-                logger.info("Point A found");
+                //logger.info("Point A found");
                 resultSet.addAll(collect);
             }
 
         }else if (BarB.getIsExtreme().equals("MAX")){
 
-            // if BarB is an local MAX extreme
-            // then BarB and BarD must be local MIN
-
-            priceALowerLimit = Fibonacci.calcFiboRetracePriceBackward(BarB.getHigh(), BarC.getLow(), ABCpercentageLowerLimit);
-            priceAUpperLimit = Fibonacci.calcFiboRetracePriceBackward(BarB.getHigh(), BarC.getLow(), ABCpercentageUpperLimit);
+            // if BarB is an local MAX extreme..
 
             List <Bar> collect = extremePoints.stream().filter(bar -> {
-                return bar.getLow() > priceALowerLimit && bar.getLow() < priceAUpperLimit && bar.getIsExtreme().equals("MIN");
+                return bar.getLow() <= BarC.getLow() && bar.getIsExtreme().equals("MIN");
             }).collect(Collectors.toList());
 
             if (collect.size() > 0 ){
-                logger.info("Point A found");
+                //logger.info("Point A found");
                 resultSet.addAll(collect);
             }
 
@@ -257,6 +269,8 @@ public class Bat {
             priceXADLowerLimit = Fibonacci.calcFiboRetracePriceBackward(BarA.getLow(), BarD.getHigh(), XADpercentageLowerLimit);
             priceXADUpperLimit = Fibonacci.calcFiboRetracePriceBackward(BarA.getLow(),BarD.getHigh(), XADpercentageUpperLimit);
 
+            // TODO : also add XAC limit
+
             // merging 2 constraints
             priceXLowerLimit = Math.max(priceXABLowerLimit, priceXADLowerLimit);   // highest between lower limits will be general low limit
             priceXUpperLimit = Math.min(priceXABUpperLimit, priceXADUpperLimit);   // lowest between  highest limits will be general high limit
@@ -295,7 +309,7 @@ public class Bat {
 
             if (collect.size() > 0 ){
 
-                logger.info("Point X found");
+                //logger.info("Point X found");
                 resultSet.addAll(collect);
             }
 

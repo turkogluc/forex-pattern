@@ -83,4 +83,18 @@ public class FibonacciRetracePriceBackwardTest {
         assertEquals(pointX,Fibonacci.calcFiboRetracePriceBackward(pointA,pointB,percentage),0.01);
 
     }
+
+
+    @Test public void simple_CalcRetracePriceBackwardTest2(){
+
+
+        double pointX = 100;
+
+        double pointA = 200;
+        double pointB = 170;
+        double percentage = 30;
+
+        assertEquals(pointX,Fibonacci.calcFiboRetracePriceBackward(pointA,pointB,percentage),0.01);
+
+    }
 }
