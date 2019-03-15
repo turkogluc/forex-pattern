@@ -26,7 +26,10 @@ public class PatternsApplicationTests {
     @Test
     public void bcdPointsTest() throws IOException {
 
-        scanBatOnPair(Currency.EUR,Currency.NZD,3);
+        scanBatOnPair(Currency.EUR,Currency.USD,5);
+        scanBatOnPair(Currency.EUR,Currency.CAD,5);
+        scanBatOnPair(Currency.EUR,Currency.AUD,5);
+        scanBatOnPair(Currency.EUR,Currency.GBP,5);
 
 
     }

@@ -1,6 +1,12 @@
 package com.forex.patterns.util;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import sun.rmi.runtime.Log;
+
 public class Fibonacci {
+
+    static Logger logger = LoggerFactory.getLogger(Fibonacci.class);
 
     /**
      * Given X,A,B points in a zigzag,
@@ -25,7 +31,7 @@ public class Fibonacci {
             then there is no retrace but an continuous up or down move
          */
         if( (pointX > pointA && pointA > pointB) || (pointX < pointA && pointA < pointB) ) {
-            System.out.println("there is no retrace");
+            logger.debug("there is no retrace");
             return 0;
         }
 
@@ -35,7 +41,7 @@ public class Fibonacci {
 
         // Zero division check
         if(diffXA == 0){
-            System.out.println("zero division mistake");
+            logger.debug("zero division mistake");
             return 0;
         }
 

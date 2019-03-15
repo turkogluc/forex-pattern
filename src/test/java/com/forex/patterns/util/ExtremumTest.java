@@ -5,6 +5,8 @@ import com.forex.patterns.model.Currency;
 import com.forex.patterns.model.Interval;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -19,6 +21,8 @@ import static org.junit.Assert.*;
 @RunWith(SpringRunner.class)
 
 public class ExtremumTest {
+    
+    Logger logger = LoggerFactory.getLogger(ExtremumTest.class);
 
     @Autowired
     RestConsumer restConsumer;
@@ -40,13 +44,13 @@ public class ExtremumTest {
 
         List<Bar> extrems = findLocalMaximumPoints(exchangeRateData, 5);
 
-        System.out.println("Local maxs");
+        logger.info("Local maxs");
 
         for(Bar bar: extrems){
-            System.out.println(bar.toString());
+            logger.info(bar.toString());
         }
 
-        System.out.println("size="+extrems.size());
+        logger.info("size="+extrems.size());
 
 
     }
@@ -57,13 +61,13 @@ public class ExtremumTest {
         List<Bar> exchangeRateData = getExchangeRateData();
 
         List<Bar> localMinimums = findLocalMinimumPoints(exchangeRateData, 5);
-        System.out.println("Local mins");
+        logger.info("Local mins");
 
         for(Bar bar: localMinimums){
-            System.out.println(bar.toString());
+            logger.info(bar.toString());
         }
 
-        System.out.println("size="+localMinimums.size());
+        logger.info("size="+localMinimums.size());
 
     }
 
@@ -73,13 +77,13 @@ public class ExtremumTest {
         List<Bar> exchangeRateData = getExchangeRateData();
 
         List<Bar> extremePoints = findExtremePoints(exchangeRateData, 5);
-        System.out.println("Extrem Points");
+        logger.info("Extrem Points");
 
         for(Bar bar: extremePoints){
-            System.out.println(bar.toString());
+            logger.info(bar.toString());
         }
 
-        System.out.println("size="+extremePoints.size());
+        logger.info("size="+extremePoints.size());
 
 
     }

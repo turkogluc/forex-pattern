@@ -4,6 +4,8 @@ import com.forex.patterns.model.Bar;
 import com.forex.patterns.model.Pattern;
 import com.forex.patterns.util.Extremum;
 import com.forex.patterns.util.Fibonacci;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,6 +13,8 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class Bat {
+
+    static Logger logger = LoggerFactory.getLogger(Bat.class);
 
     /*
         retrace for B-C-D could be between 168.1 and 268.1
@@ -86,11 +90,11 @@ public class Bat {
                                             shapedPattern.setPointC(pointC);
                                             shapedPattern.setPointD(pointD);
 
-                                            System.out.println("pointX:" + pointX);
-                                            System.out.println("pointA:" + pointA);
-                                            System.out.println("pointB:" + pointB);
-                                            System.out.println("pointC:" + pointC);
-                                            System.out.println("pointD:" + pointD);
+                                            logger.info("pointX:" + pointX);
+                                            logger.info("pointA:" + pointA);
+                                            logger.info("pointB:" + pointB);
+                                            logger.info("pointC:" + pointC);
+                                            logger.info("pointD:" + pointD);
 
                                         });
 
@@ -137,7 +141,7 @@ public class Bat {
 
             if (collect.size() > 0 ){
 
-                //System.out.println("Point B found");
+                //logger.info("Point B found");
                 resultSet.addAll(collect);
             }
 
@@ -154,7 +158,7 @@ public class Bat {
             }).collect(Collectors.toList());
 
             if (collect.size() > 0 ){
-                //System.out.println("Point B found");
+                //logger.info("Point B found");
                 resultSet.addAll(collect);
             }
 
@@ -195,7 +199,7 @@ public class Bat {
 
             if (collect.size() > 0 ){
 
-                System.out.println("Point A found");
+                logger.info("Point A found");
                 resultSet.addAll(collect);
             }
 
@@ -212,7 +216,7 @@ public class Bat {
             }).collect(Collectors.toList());
 
             if (collect.size() > 0 ){
-                System.out.println("Point A found");
+                logger.info("Point A found");
                 resultSet.addAll(collect);
             }
 
@@ -265,7 +269,7 @@ public class Bat {
 
             if (collect.size() > 0 ){
 
-                System.out.println("Point X found");
+                logger.info("Point X found");
                 resultSet.addAll(collect);
             }
 
@@ -291,7 +295,7 @@ public class Bat {
 
             if (collect.size() > 0 ){
 
-                System.out.println("Point X found");
+                logger.info("Point X found");
                 resultSet.addAll(collect);
             }
 

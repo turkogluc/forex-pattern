@@ -5,6 +5,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.forex.patterns.model.Bar;
 import com.forex.patterns.model.ExchangeRateData;
 import com.forex.patterns.repository.ExchangeRateDataRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
@@ -21,7 +23,11 @@ public class RestConsumer {
 
     public List<Bar> retrieveExchangeDataByInterval(String from, String to, String interval) {
 
+        Logger logger = LoggerFactory.getLogger(RestConsumer.class);
+
         List<Bar> bars = new ArrayList<>();
+
+        logger.info(from+to+" "+interval+" is being requested");
 
         try {
 
@@ -37,19 +43,21 @@ public class RestConsumer {
             String resultStr = restTemplate.getForObject(url, String.class,from,to,interval, API_KEY);
 
             ObjectMapper mapper = new ObjectMapper();
-            JsonNode json = null;
+            JsonNode json;
 
             json = mapper.readTree(resultStr);
 
-
-
             String nodeTitle = GET_JSON_NODE_NAME(interval); // "Time Series FX (5min)"
 
-            if (json == null){
+            if (json.isNull()){
                 return bars;
             }
+            if (json.get(nodeTitle).isNull()){
+                return bars;
+            }
+            Iterator<Map.Entry<String, JsonNode>> it = json.get(nodeTitle).fields();
 
-            for (Iterator<Map.Entry<String, JsonNode>> it = json.get(nodeTitle).fields(); it.hasNext(); ) {
+            while ( it.hasNext() ) {
                 Map.Entry<String, JsonNode> element = it.next();
 
                 Bar bar = new Bar();
@@ -62,14 +70,15 @@ public class RestConsumer {
 
                 bars.add(bar);
 
-                //System.out.println(bar.toString());
 
             }
 
         } catch (IOException e) {
-            e.printStackTrace();
-
-            return retrieveExchangeDataByInterval(from,to,interval);
+            logger.error(e.getMessage());
+            /*
+                    5 calls per min and 500 calls per day is max limit
+                    that's why getting error
+             */
 
         }
 
@@ -80,7 +89,7 @@ public class RestConsumer {
 
 }
 
-
+//  request for tick data
 //        ExchangeRateData exchangeRateData = new ExchangeRateData();
 //        exchangeRateData.setFromCurrencyCode(json.get("Realtime Currency Exchange Rate").get("1. From_Currency Code")..textValue());
 //        exchangeRateData.setToCurrencyCode(json.get("Realtime Currency Exchange Rate").get("3. To_Currency Code").textValue());

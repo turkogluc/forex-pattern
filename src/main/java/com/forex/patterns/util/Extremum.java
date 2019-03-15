@@ -1,6 +1,8 @@
 package com.forex.patterns.util;
 
 import com.forex.patterns.model.Bar;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -12,6 +14,8 @@ import java.util.stream.Stream;
  * Static functions related with extreme point analyze
  */
 public class Extremum {
+    
+    static Logger logger = LoggerFactory.getLogger(Extremum.class);
 
     /**
      * Find Local Minimums in a list of price bars
@@ -35,7 +39,7 @@ public class Extremum {
          */
 
         if(inputBars.size() < numOfNeighbours*2+1){
-            System.out.println("input bars are not enough wide to calculate");
+            logger.debug("input bars are not enough wide to calculate");
             return null;
         }
 
@@ -138,7 +142,7 @@ public class Extremum {
          */
 
         if(inputBars.size() < numOfNeighbours*2+1){
-            System.out.println("input bars are not enough wide to calculate");
+            logger.debug("input bars are not enough wide to calculate <- local max points");
             return null;
         }
 
