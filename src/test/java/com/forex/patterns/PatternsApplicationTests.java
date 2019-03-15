@@ -6,6 +6,7 @@ import com.forex.patterns.model.Currency;
 import com.forex.patterns.model.Interval;
 import com.forex.patterns.model.Pattern;
 import com.forex.patterns.pattern.Bat;
+import com.forex.patterns.util.HistoricalDataReader;
 import com.forex.patterns.util.RestConsumer;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -26,29 +27,35 @@ public class PatternsApplicationTests {
     @Test
     public void bcdPointsTest() throws IOException {
 
-        scanBatOnPair(Currency.EUR,Currency.USD,5);
-        scanBatOnPair(Currency.EUR,Currency.CAD,5);
-        scanBatOnPair(Currency.EUR,Currency.AUD,5);
-        scanBatOnPair(Currency.EUR,Currency.GBP,5);
-
+        Bat.ScanBat(retrieveHistoricalDataFromFileTest(), 5);
 
     }
 
-    public void scanBatOnPair(String from, String to,int interval) throws IOException {
+
+    public List<Bar> retrieveHistoricalDataFromFileTest() {
+
+        String filename = "/Users/cemalturkoglu/Downloads/eurusd.csv";
+
+        return HistoricalDataReader.retrieveHistoricalDataFromFile(filename);
+
+    }
+
+
+    public void scanBatOnPair(List<Bar> exchangeRateData, String from, String to,int interval) throws IOException {
         // 3 bar neighbour
-        List <Bar> exchangeRateData = getExchangeRateData(from,to,Interval._1MIN);
+        //List <Bar> exchangeRateData = getExchangeRateData(from,to,Interval._1MIN);
         Bat.ScanBat(exchangeRateData, interval);
                 
-        exchangeRateData = getExchangeRateData(from,to,Interval._5MIN);
+        //exchangeRateData = getExchangeRateData(from,to,Interval._5MIN);
         Bat.ScanBat(exchangeRateData, interval);
 
-        exchangeRateData = getExchangeRateData(from,to,Interval._15MIN);
+        //exchangeRateData = getExchangeRateData(from,to,Interval._15MIN);
         Bat.ScanBat(exchangeRateData, interval);
 
-        exchangeRateData = getExchangeRateData(from,to,Interval._30MIN);
+        //exchangeRateData = getExchangeRateData(from,to,Interval._30MIN);
         Bat.ScanBat(exchangeRateData, interval);
 
-        exchangeRateData = getExchangeRateData(from,to,Interval._60MIN);
+        //exchangeRateData = getExchangeRateData(from,to,Interval._60MIN);
         Bat.ScanBat(exchangeRateData, interval);
 
     }

@@ -52,7 +52,7 @@ public class Bat {
 
         //List<Bar> chart = inputChart.subList(0, inputChart.indexOf(extremePoints.get(1)));
 
-        extremePoints.forEach(pointD -> { // for each bar (possibly point D) on the chart
+        inputChart.forEach(pointD -> { // for each bar (possibly point D) on the chart
 
             extremePoints.forEach(pointC -> { // choose each and every extreme points as possible point C
 
@@ -141,7 +141,7 @@ public class Bat {
 
             if (collect.size() > 0 ){
 
-                //logger.info("Point B found");
+                logger.info("Point B found");
                 resultSet.addAll(collect);
             }
 
@@ -158,7 +158,7 @@ public class Bat {
             }).collect(Collectors.toList());
 
             if (collect.size() > 0 ){
-                //logger.info("Point B found");
+                logger.info("Point B found");
                 resultSet.addAll(collect);
             }
 
